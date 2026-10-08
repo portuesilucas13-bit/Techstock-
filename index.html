@@ -2,156 +2,33 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#0b1220">
 <title>TechStock</title>
 
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;
- font-family:Arial,sans-serif;
- background:#0b1220;
- color:white;
-}
-header{
- background:linear-gradient(135deg,#111c33,#07101f);
- padding:22px 18px;
- border-bottom:1px solid #263653;
-}
-.logo{
- display:flex;
- align-items:center;
- gap:12px;
-}
-.logo-icon{
- width:48px;
- height:48px;
- border-radius:14px;
- background:linear-gradient(135deg,#00d9ff,#1769ff);
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:25px;
-}
-.logo h1{margin:0;font-size:25px}
-.logo span{color:#22d3ee}
-.container{
- padding:18px;
- max-width:700px;
- margin:auto;
-}
-.search{
- width:100%;
- padding:15px;
- border-radius:12px;
- border:1px solid #31415e;
- background:#111c2f;
- color:white;
- font-size:16px;
- margin-bottom:15px;
-}
-.cards{
- display:grid;
- grid-template-columns:repeat(2,1fr);
- gap:12px;
-}
-.card{
- background:#111c2f;
- border:1px solid #263653;
- border-radius:16px;
- padding:16px;
-}
-.card .icon{font-size:25px}
-.card h3{
- margin:8px 0 3px;
- font-size:14px;
- color:#9fb0c9;
-}
-.card strong{font-size:24px}
-.section-title{margin:25px 0 12px}
-button{
- border:0;
- border-radius:12px;
- padding:13px 16px;
- color:white;
- font-weight:bold;
- cursor:pointer;
-}
-.primary{background:linear-gradient(135deg,#08b8ed,#1769ff)}
-.secondary{background:#1a2942}
-.danger{background:#9f1d35}
-.actions{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:10px;
-}
-.product{
- background:#111c2f;
- border:1px solid #263653;
- border-radius:15px;
- padding:15px;
- margin-bottom:10px;
-}
-.product-top{
- display:flex;
- justify-content:space-between;
- gap:10px;
-}
-.product h3{margin:0 0 5px}
-.product p{
- margin:4px 0;
- color:#aebbd0;
- font-size:14px;
-}
-.stock{
- color:#55e6a5;
- font-weight:bold;
-}
+body{margin:0;background:#0b1220;color:#fff;font-family:Arial}
+header{padding:20px;background:#111c33;border-bottom:1px solid #263653}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-icon{font-size:38px;background:#09f;border-radius:14px;padding:8px}
+h1{margin:0;font-size:26px}
+h1 span{color:#22d3ee}
+main{max-width:700px;margin:auto;padding:18px}
+input,select{width:100%;padding:14px;margin:6px 0 12px;border-radius:10px;border:1px solid #31415e;background:#111c2f;color:#fff}
+.search{font-size:16px;margin-bottom:15px}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card{background:#111c2f;border:1px solid #263653;border-radius:16px;padding:16px}
+.card b{font-size:25px;display:block;margin-top:8px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+button{border:0;border-radius:11px;padding:13px;color:#fff;font-weight:bold;background:#1769ff}
+.gray{background:#1a2942}
+.red{background:#a51d35}
+.product{background:#111c2f;border:1px solid #263653;border-radius:15px;padding:15px;margin:10px 0}
+.stock{color:#55e6a5;font-weight:bold}
 .low{color:#ffd166}
-.empty{
- text-align:center;
- color:#8392aa;
- padding:30px 10px;
-}
-.modal{
- display:none;
- position:fixed;
- inset:0;
- background:rgba(0,0,0,.75);
- z-index:10;
- padding:20px;
- overflow:auto;
-}
-.modal-box{
- background:#111c2f;
- max-width:600px;
- margin:20px auto;
- padding:20px;
- border-radius:18px;
-}
-.close{
- float:right;
- background:#293952;
-}
-input,select{
- width:100%;
- padding:14px;
- margin:7px 0 12px;
- border-radius:10px;
- border:1px solid #31415e;
- background:#0b1220;
- color:white;
-}
-label{
- color:#aebbd0;
- font-size:13px;
-}
-.form-buttons{
- display:flex;
- gap:10px;
-}
-.form-buttons button{flex:1}
+.modal{display:none;position:fixed;inset:0;background:#000b;padding:20px;overflow:auto}
+.box{background:#111c2f;padding:20px;border-radius:18px;max-width:600px;margin:auto}
 </style>
 </head>
 
@@ -162,27 +39,221 @@ label{
 <div class="logo-icon">📦</div>
 <div>
 <h1>Tech<span>Stock</span></h1>
-<small>Control de inventario</small>
+Control de inventario
 </div>
 </div>
 </header>
 
-<div class="container">
+<main>
 
-<input
- id="search"
- class="search"
- type="search"
- placeholder="🔎 Buscar producto..."
- oninput="renderProducts()"
->
+<input id="search" class="search" placeholder="🔎 Buscar producto..." oninput="mostrar()">
 
 <div class="cards">
-
-<div class="card">
-<div class="icon">📦</div>
-<h3>Productos</h3>
-<strong id="totalProducts">0</strong>
+<div class="card">📦<br>Productos<b id="np">0</b></div>
+<div class="card">📊<br>Unidades<b id="nu">0</b></div>
+<div class="card">⚠️<br>Poco stock<b id="nl">0</b></div>
+<div class="card">🔴<br>Sin stock<b id="ns">0</b></div>
 </div>
 
-<div class="card">
+<h2>Acciones</h2>
+
+<div class="actions">
+<button onclick="abrir()">➕ Producto</button>
+<button class="gray" onclick="mov(-1)">📤 Venta</button>
+<button class="gray" onclick="mov(1)">📥 Entrada</button>
+<button class="gray" onclick="alert('Lector de códigos próximamente')">📷 Escanear</button>
+</div>
+
+<h2>📋 Catálogo</h2>
+<div id="lista">No hay productos todavía.</div>
+
+</main>
+
+<div class="modal" id="modal">
+<div class="box">
+
+<h2>➕ Nuevo producto</h2>
+
+<input id="nombre" placeholder="Nombre del producto">
+<input id="codigo" placeholder="Código">
+<input id="marca" placeholder="Marca">
+<input id="modelo" placeholder="Modelo">
+
+<select id="categoria">
+<option>Celulares</option>
+<option>Fundas</option>
+<option>Módulos</option>
+<option>Cargadores</option>
+<option>Accesorios</option>
+<option>Otros</option>
+</select>
+
+<input id="compra" type="number" placeholder="Precio de compra">
+<input id="venta" type="number" placeholder="Precio de venta">
+<input id="stock" type="number" placeholder="Stock inicial" value="0">
+<input id="minimo" type="number" placeholder="Stock mínimo" value="2">
+
+<button onclick="guardar()">💾 Guardar producto</button>
+<button class="gray" onclick="cerrar()">Cancelar</button>
+
+</div>
+</div>
+
+<script>
+
+let productos=JSON.parse(localStorage.getItem("techstock")||"[]");
+
+function datos(){
+localStorage.setItem("techstock",JSON.stringify(productos));
+}
+
+function abrir(){
+document.getElementById("modal").style.display="block";
+}
+
+function cerrar(){
+document.getElementById("modal").style.display="none";
+}
+
+function guardar(){
+
+let nombre=document.getElementById("nombre").value.trim();
+
+if(!nombre){
+alert("Escribí el nombre del producto");
+return;
+}
+
+productos.push({
+id:Date.now(),
+nombre:nombre,
+codigo:document.getElementById("codigo").value,
+marca:document.getElementById("marca").value,
+modelo:document.getElementById("modelo").value,
+categoria:document.getElementById("categoria").value,
+compra:Number(document.getElementById("compra").value)||0,
+venta:Number(document.getElementById("venta").value)||0,
+stock:Number(document.getElementById("stock").value)||0,
+minimo:Number(document.getElementById("minimo").value)||2
+});
+
+datos();
+cerrar();
+mostrar();
+
+}
+
+function mostrar(){
+
+let buscar=document.getElementById("search").value.toLowerCase();
+
+let lista=productos.filter(p=>
+p.nombre.toLowerCase().includes(buscar)||
+p.codigo.toLowerCase().includes(buscar)||
+p.modelo.toLowerCase().includes(buscar)
+);
+
+document.getElementById("np").textContent=productos.length;
+
+document.getElementById("nu").textContent=
+productos.reduce((a,p)=>a+p.stock,0);
+
+document.getElementById("nl").textContent=
+productos.filter(p=>p.stock>0&&p.stock<=p.minimo).length;
+
+document.getElementById("ns").textContent=
+productos.filter(p=>p.stock==0).length;
+
+if(lista.length==0){
+document.getElementById("lista").innerHTML=
+"No hay productos todavía.";
+return;
+}
+
+document.getElementById("lista").innerHTML=lista.map(p=>`
+<div class="product">
+<b>${p.nombre}</b>
+<br>${p.marca} ${p.modelo}
+<br>🏷️ ${p.categoria}
+<br>💰 Venta: $${p.venta.toLocaleString("es-AR")}
+<br><span class="${p.stock<=p.minimo?'low':'stock'}">Stock: ${p.stock}</span>
+<br><br>
+<button onclick="cambiar(${p.id},1)">➕</button>
+<button class="gray" onclick="cambiar(${p.id},-1)">➖</button>
+<button class="red" onclick="borrar(${p.id})">🗑️</button>
+</div>
+`).join("");
+
+}
+
+function cambiar(id,cantidad){
+
+let p=productos.find(x=>x.id==id);
+
+if(!p)return;
+
+if(cantidad<0&&p.stock==0){
+alert("No hay stock");
+return;
+}
+
+p.stock+=cantidad;
+datos();
+mostrar();
+
+}
+
+function borrar(id){
+
+if(confirm("¿Eliminar este producto?")){
+productos=productos.filter(p=>p.id!=id);
+datos();
+mostrar();
+}
+
+}
+
+function mov(cantidad){
+
+if(productos.length==0){
+alert("Primero agregá un producto");
+return;
+}
+
+let nombre=prompt("Nombre o código del producto:");
+
+if(!nombre)return;
+
+let p=productos.find(x=>
+x.nombre.toLowerCase()==nombre.toLowerCase()||
+x.codigo==nombre
+);
+
+if(!p){
+alert("Producto no encontrado");
+return;
+}
+
+let cantidadMov=Number(prompt("Cantidad:"));
+
+if(cantidadMov>0){
+
+if(cantidad<0&&cantidadMov>p.stock){
+alert("No hay suficiente stock");
+return;
+}
+
+p.stock+=cantidad*cantidadMov;
+datos();
+mostrar();
+
+}
+
+}
+
+mostrar();
+
+</script>
+
+</body>
+</html>
