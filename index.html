@@ -59,6 +59,7 @@ Control de inventario
 <h2>Acciones</h2>
 
 <div class="actions">
+  <button class="gray" onclick="filtrarCategoria('Fundas')">📱 Fundas</button>
 <button onclick="abrir()">➕ Producto</button>
 <button class="gray" onclick="mov(-1)">📤 Venta</button>
 <button class="gray" onclick="mov(1)">📥 Entrada</button>
@@ -254,6 +255,22 @@ mostrar();
 
 mostrar();
 
+function filtrarCategoria(categoria){
+  let lista = productos.filter(p => p.categoria === categoria);
+  let cont = document.getElementById("lista");
+  if(lista.length === 0){
+    cont.innerHTML = "No hay productos en " + categoria + ".";
+    return;
+  }
+  cont.innerHTML = lista.map(p => `
+    <div class="card">
+      <b>${p.nombre}</b><br>
+      ${p.marca || ""} ${p.modelo || ""}<br>
+      💰 $${p.venta}<br>
+      📦 Stock: ${p.stock}
+    </div>
+  `).join("");
+     }
 </script>
 <script>
 if ('serviceWorker' in navigator) {
