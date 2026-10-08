@@ -1,1 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1220">
+<title>TechStock</title>
 
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#0b1220;
+ color:white;
+}
+header{
+ background:linear-gradient(135deg,#111c33,#07101f);
+ padding:22px 18px;
+ border-bottom:1px solid #263653;
+}
+.logo{
+ display:flex;
+ align-items:center;
+ gap:12px;
+}
+.logo-icon{
+ width:48px;
+ height:48px;
+ border-radius:14px;
+ background:linear-gradient(135deg,#00d9ff,#1769ff);
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:25px;
+}
+.logo h1{margin:0;font-size:25px}
+.logo span{color:#22d3ee}
+.container{
+ padding:18px;
+ max-width:700px;
+ margin:auto;
+}
+.search{
+ width:100%;
+ padding:15px;
+ border-radius:12px;
+ border:1px solid #31415e;
+ background:#111c2f;
+ color:white;
+ font-size:16px;
+ margin-bottom:15px;
+}
+.cards{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:12px;
+}
+.card{
+ background:#111c2f;
+ border:1px solid #263653;
+ border-radius:16px;
+ padding:16px;
+}
+.card .icon{font-size:25px}
+.card h3{
+ margin:8px 0 3px;
+ font-size:14px;
+ color:#9fb0c9;
+}
+.card strong{font-size:24px}
+.section-title{margin:25px 0 12px}
+button{
+ border:0;
+ border-radius:12px;
+ padding:13px 16px;
+ color:white;
+ font-weight:bold;
+ cursor:pointer;
+}
+.primary{background:linear-gradient(135deg,#08b8ed,#1769ff)}
+.secondary{background:#1a2942}
+.danger{background:#9f1d35}
+.actions{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:10px;
+}
+.product{
+ background:#111c2f;
+ border:1px solid #263653;
+ border-radius:15px;
+ padding:15px;
+ margin-bottom:10px;
+}
+.product-top{
+ display:flex;
+ justify-content:space-between;
+ gap:10px;
+}
+.product h3{margin:0 0 5px}
+.product p{
+ margin:4px 0;
+ color:#aebbd0;
+ font-size:14px;
+}
+.stock{
+ color:#55e6a5;
+ font-weight:bold;
+}
+.low{color:#ffd166}
+.empty{
+ text-align:center;
+ color:#8392aa;
+ padding:30px 10px;
+}
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ background:rgba(0,0,0,.75);
+ z-index:10;
+ padding:20px;
+ overflow:auto;
+}
+.modal-box{
+ background:#111c2f;
+ max-width:600px;
+ margin:20px auto;
+ padding:20px;
+ border-radius:18px;
+}
+.close{
+ float:right;
+ background:#293952;
+}
+input,select{
+ width:100%;
+ padding:14px;
+ margin:7px 0 12px;
+ border-radius:10px;
+ border:1px solid #31415e;
+ background:#0b1220;
+ color:white;
+}
+label{
+ color:#aebbd0;
+ font-size:13px;
+}
+.form-buttons{
+ display:flex;
+ gap:10px;
+}
+.form-buttons button{flex:1}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+<div class="logo-icon">📦</div>
+<div>
+<h1>Tech<span>Stock</span></h1>
+<small>Control de inventario</small>
+</div>
+</div>
+</header>
+
+<div class="container">
+
+<input
+ id="search"
+ class="search"
+ type="search"
+ placeholder="🔎 Buscar producto..."
+ oninput="renderProducts()"
+>
+
+<div class="cards">
+
+<div class="card">
+<div class="icon">📦</div>
+<h3>Productos</h3>
+<strong id="totalProducts">0</strong>
+</div>
+
+<div class="card">
