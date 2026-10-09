@@ -1,0 +1,35 @@
+.tabla-stock {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  font-size: 14px;
+  background: #111c2f;
+  color: #ffffff;
+}
+
+.tabla-stock th {
+  background: #1d65f5;
+  color: white;
+  padding: 12px 8px;
+  text-align: left;
+  border: 1px solid #34445f;
+}
+
+.tabla-stock td {
+  padding: 12px 8px;
+  border: 1px solid #34445f;
+}
+
+.tabla-stock tr:nth-child(even) {
+  background: #17243a;
+}
+
+.tabla-stock input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  background: #0b1220;
+  color: white;
+  border: 1px solid #34445f;
+  border-radius: 5px;
+}
