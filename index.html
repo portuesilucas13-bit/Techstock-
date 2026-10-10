@@ -2,284 +2,77 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#0b1220">
-<title>TechStock</title>
-<link rel="icon" type="image/png" href="techstock-icon-512.png">
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="tabla.css">
+<title>TechStock Reparaciones</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b1220;color:#fff;font-family:Arial}
-header{padding:20px;background:#111c33;border-bottom:1px solid #263653}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{font-size:38px;background:#09f;border-radius:14px;padding:8px}
-h1{margin:0;font-size:26px}
-h1 span{color:#22d3ee}
-main{max-width:700px;margin:auto;padding:18px}
-input,select{width:100%;padding:14px;margin:6px 0 12px;border-radius:10px;border:1px solid #31415e;background:#111c2f;color:#fff}
-.search{font-size:16px;margin-bottom:15px}
-.cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.card{background:#111c2f;border:1px solid #263653;border-radius:16px;padding:16px}
-.card b{font-size:25px;display:block;margin-top:8px}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
-button{border:0;border-radius:11px;padding:13px;color:#fff;font-weight:bold;background:#1769ff}
-.gray{background:#1a2942}
-.red{background:#a51d35}
-.product{background:#111c2f;border:1px solid #263653;border-radius:15px;padding:15px;margin:10px 0}
-.stock{color:#55e6a5;font-weight:bold}
-.low{color:#ffd166}
-  .product.alerta-bajo{border:2px solid #ffd166}
-.product.alerta-sin{border:2px solid #ff5252}
-.modal{display:none;position:fixed;inset:0;background:#000b;padding:20px;overflow:auto}
-.box{background:#111c2f;padding:20px;border-radius:18px;max-width:600px;margin:auto}
+*{box-sizing:border-box}body{margin:0;background:#0b1220;color:#fff;font-family:Arial,sans-serif}
+header{padding:20px;background:#111c33;border-bottom:1px solid #263653}h1{margin:0;font-size:24px}h1 span{color:#22d3ee}
+main{max-width:800px;margin:auto;padding:16px}.panel{background:#111c33;border:1px solid #263653;border-radius:15px;padding:16px;margin-bottom:16px}
+input,select,textarea{width:100%;padding:12px;margin:5px 0 12px;border-radius:8px;border:1px solid #31415e;background:#0b1220;color:white;font-size:16px}
+label{display:block;font-size:14px;color:#cbd5e1}button{border:0;border-radius:9px;padding:12px;background:#1769ff;color:white;font-weight:bold;font-size:15px;margin:4px 0;cursor:pointer}
+button.sec{background:#334155}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{border:1px solid #334155;border-radius:12px;padding:13px;margin:10px 0;background:#0f1a2d}
+.small{color:#aabbd2;font-size:13px}.status{color:#fcd34d;font-weight:bold}.note{padding:12px;border:1px solid #475569;border-radius:9px;color:#cbd5e1;font-size:14px;margin:8px 0 12px}.total{font-size:18px;font-weight:bold;color:#67e8f9;margin:8px 0 14px}
+@media(max-width:500px){.grid{grid-template-columns:1fr}}
 </style>
 </head>
-
 <body>
-
-<header>
-<div class="logo">
-<div class="logo-icon">📦</div>
-<div>
-<h1>Tech<span>Stock</span></h1>
-Control de inventario
-</div>
-</div>
-</header>
-
+<header><h1>TechStock <span>Reparaciones</span></h1><div class="small">Gestión de órdenes de reparación</div></header>
 <main>
-
-<input id="search" class="search" placeholder="🔎 Buscar producto..." oninput="mostrar()">
-
-<div class="cards">
-<div class="card">📦<br>Productos<b id="np">0</b></div>
-<div class="card">📊<br>Unidades<b id="nu">0</b></div>
-<div class="card">⚠️<br>Poco stock<b id="nl">0</b></div>
-<div class="card">🔴<br>Sin stock<b id="ns">0</b></div>
+<div class="panel">
+<h2>📋 Nuevo ingreso</h2>
+<form id="form">
+<label>Nombre del cliente *</label><input id="cliente" required>
+<label>WhatsApp del cliente *</label><input id="telefono" type="tel" required placeholder="Código de país y número">
+<div class="grid"><div><label>Marca *</label><input id="marca" required placeholder="Samsung, Motorola..."></div><div><label>Modelo *</label><input id="modelo" required placeholder="A32, G54..."></div></div>
+<label>IMEI o número de serie (opcional)</label><input id="imei">
+<label>Falla declarada por el cliente *</label><textarea id="falla" required rows="2"></textarea>
+<label>Estado físico al recibirlo</label><textarea id="estadoFisico" rows="2" placeholder="Golpes, rayones, pantalla rota..."></textarea>
+<label>Accesorios recibidos</label><input id="accesorios" placeholder="Ninguno, funda, cargador...">
+<label>Trabajo o diagnóstico inicial</label><textarea id="diagnostico" rows="2"></textarea>
+<div class="grid"><div><label>Presupuesto inicial ($)</label><input id="presupuesto" type="number" min="0" step="0.01" value="0" oninput="actualizarTotal()"></div><div><label>Seña recibida ($)</label><input id="sena" type="number" min="0" step="0.01" value="0" oninput="actualizarTotal()"></div></div>
+<div class="note"><strong>Importante:</strong> si durante la revisión aparecen otras fallas, el presupuesto puede variar. Informá el costo adicional y registrá la autorización del cliente antes de hacer el trabajo extra.</div>
+<h3>🔧 Fallas adicionales (opcional)</h3>
+<label>Descripción de la falla adicional</label><input id="fallaAdicional" placeholder="Ej.: el parlante no funciona">
+<div class="grid"><div><label>Costo adicional ($)</label><input id="costoAdicional" type="number" min="0" step="0.01" value="0" oninput="actualizarTotal()"></div><div><label>Autorización del cliente</label><select id="autorizacion"><option value="Pendiente">Pendiente de autorización</option><option value="Autorizado">Autorizado por el cliente</option><option value="Rechazado">Rechazado por el cliente</option></select></div></div>
+<label>Observaciones de la falla adicional</label><textarea id="obsAdicional" rows="2" placeholder="Detalles de lo encontrado o informado"></textarea>
+<div class="total" id="totalVista">Presupuesto total actualizado: $0</div><div class="small" id="saldoVista">Saldo estimado luego de la seña: $0</div>
+<label>Estado de la reparación</label><select id="estado"><option>Recibido</option><option>En revisión</option><option>Esperando repuesto</option><option>En reparación</option><option>Reparado</option><option>Entregado</option></select>
+<label>Observaciones generales</label><textarea id="observaciones" rows="2"></textarea>
+<button type="submit">Guardar ingreso</button>
+</form>
 </div>
-
-<h2>Acciones</h2>
-
-<div class="actions">
-  <button class="gray" onclick="filtrarCategoria('Fundas')">📱 Fundas</button>
-<button onclick="abrir()">➕ Producto</button>
-<button class="gray" onclick="mov(-1)">📤 Venta</button>
-<button class="gray" onclick="mov(1)">📥 Entrada</button>
-<button class="gray" onclick="alert('Lector de códigos próximamente')">📷 Escanear</button>
-</div>
-
-<h2>📋 Catálogo</h2>
-  <div id="tablaFundas"></div>
-<div id="lista">No hay productos todavía.</div>
-
+<div class="panel"><h2>🔎 Reparaciones registradas</h2><input id="buscar" placeholder="Buscar por orden, cliente o modelo..." oninput="mostrar()"><div id="lista"></div></div>
 </main>
-
-<div class="modal" id="modal">
-<div class="box">
-
-<h2>➕ Nuevo producto</h2>
-
-<input id="nombre" placeholder="Nombre del producto">
-<input id="codigo" placeholder="Código">
-<input id="marca" placeholder="Marca">
-<input id="modelo" placeholder="Modelo">
-
-<select id="categoria">
-<option>Celulares</option>
-<option>Fundas</option>
-<option>Módulos</option>
-<option>Cargadores</option>
-<option>Accesorios</option>
-<option>Otros</option>
-</select>
-
-<input id="compra" type="number" placeholder="Precio de compra">
-<input id="venta" type="number" placeholder="Precio de venta">
-<input id="stock" type="number" placeholder="Stock inicial" value="0">
-<input id="minimo" type="number" placeholder="Stock mínimo" value="2">
-
-<button onclick="guardar()">💾 Guardar producto</button>
-<button class="gray" onclick="cerrar()">Cancelar</button>
-
-</div>
-</div>
-
 <script>
-
-let productos=JSON.parse(localStorage.getItem("techstock")||"[]");
-
-function datos(){
-localStorage.setItem("techstock",JSON.stringify(productos));
-}
-
-function abrir(){
-document.getElementById("modal").style.display="block";
-}
-
-function cerrar(){
-document.getElementById("modal").style.display="none";
-}
-
-function guardar(){
-
-let nombre=document.getElementById("nombre").value.trim();
-
-if(!nombre){
-alert("Escribí el nombre del producto");
-return;
-}
-
-productos.push({
-id:Date.now(),
-nombre:nombre,
-codigo:document.getElementById("codigo").value,
-marca:document.getElementById("marca").value,
-modelo:document.getElementById("modelo").value,
-categoria:document.getElementById("categoria").value,
-compra:Number(document.getElementById("compra").value)||0,
-venta:Number(document.getElementById("venta").value)||0,
-stock:Number(document.getElementById("stock").value)||0,
-minimo:Number(document.getElementById("minimo").value)||2
+let reparaciones=[];
+try{reparaciones=JSON.parse(localStorage.getItem("techstock_reparaciones")||"[]")}catch(e){reparaciones=[]}
+let siguiente=Math.max(1,...reparaciones.map(r=>Number(r.id)||0))+0;
+function valor(id){return document.getElementById(id).value}
+function num(id){return Math.max(0,Number(valor(id))||0)}
+function dinero(n){return Number(n||0).toLocaleString("es-AR",{minimumFractionDigits:0,maximumFractionDigits:2})}
+function totalDe(r){return Math.max(0,Number(r.presupuesto)||0)+Math.max(0,Number(r.costoAdicional)||0)}
+function actualizarTotal(){let total=num("presupuesto")+num("costoAdicional"),sena=num("sena");document.getElementById("totalVista").textContent="Presupuesto total actualizado: $"+dinero(total);document.getElementById("saldoVista").textContent="Saldo estimado luego de la seña: $"+dinero(Math.max(0,total-sena))}
+function guardar(){localStorage.setItem("techstock_reparaciones",JSON.stringify(reparaciones))}
+document.getElementById("form").addEventListener("submit",function(e){
+e.preventDefault();
+let r={id:siguiente++,fecha:new Date().toLocaleDateString("es-AR"),cliente:valor("cliente").trim(),telefono:valor("telefono").trim(),marca:valor("marca").trim(),modelo:valor("modelo").trim(),imei:valor("imei").trim(),falla:valor("falla").trim(),estadoFisico:valor("estadoFisico").trim(),accesorios:valor("accesorios").trim(),diagnostico:valor("diagnostico").trim(),presupuesto:num("presupuesto"),sena:num("sena"),fallaAdicional:valor("fallaAdicional").trim(),costoAdicional:num("costoAdicional"),autorizacion:valor("autorizacion"),obsAdicional:valor("obsAdicional").trim(),estado:valor("estado"),observaciones:valor("observaciones").trim()};
+reparaciones.unshift(r);guardar();this.reset();document.getElementById("presupuesto").value=0;document.getElementById("sena").value=0;document.getElementById("costoAdicional").value=0;actualizarTotal();mostrar();alert("Ingreso guardado. Orden REP-"+String(r.id).padStart(4,"0"));
 });
-
-datos();
-cerrar();
-mostrar();
-
-}
-
 function mostrar(){
-
-let buscar=document.getElementById("search").value.toLowerCase();
-
-let lista=productos.filter(p=>
-p.nombre.toLowerCase().includes(buscar)||
-p.codigo.toLowerCase().includes(buscar)||
-p.modelo.toLowerCase().includes(buscar)
-);
-
-document.getElementById("np").textContent=productos.length;
-
-document.getElementById("nu").textContent=
-productos.reduce((a,p)=>a+p.stock,0);
-
-document.getElementById("nl").textContent=
-productos.filter(p=>p.stock>0&&p.stock<=p.minimo).length;
-
-document.getElementById("ns").textContent=
-productos.filter(p=>p.stock==0).length;
-
-if(lista.length==0){
-document.getElementById("lista").innerHTML=
-"No hay productos todavía.";
-return;
+let q=(valor("buscar")||"").toLowerCase(),lista=document.getElementById("lista");
+let filtradas=reparaciones.filter(r=>(r.cliente+" "+r.marca+" "+r.modelo+" "+r.id).toLowerCase().includes(q));
+if(!filtradas.length){lista.innerHTML='<p class="small">Todavía no hay reparaciones registradas.</p>';return}
+lista.innerHTML=filtradas.map(r=>`<div class="item"><strong>Orden REP-${String(r.id).padStart(4,"0")}</strong><p>👤 ${esc(r.cliente)} · 📱 ${esc(r.marca)} ${esc(r.modelo)}</p><p>Falla declarada: ${esc(r.falla)}</p>${r.fallaAdicional?`<p>Falla adicional: ${esc(r.fallaAdicional)}</p><p>Autorización: <strong>${esc(r.autorizacion||"Pendiente")}</strong></p>`:""}<p class="status">${esc(r.estado)}</p><p class="small">Ingreso: ${esc(r.fecha)} · Inicial: $${dinero(r.presupuesto)} · Adicional: $${dinero(r.costoAdicional)} · Total: $${dinero(totalDe(r))}</p><button onclick="whatsapp(${r.id})">Preparar WhatsApp</button> <button class="sec" onclick="pdf(${r.id})">Imprimir / Guardar PDF</button> <button class="sec" onclick="cambiarEstado(${r.id})">Cambiar estado</button> <button class="sec" onclick="editarAdicional(${r.id})">Actualizar falla/presupuesto adicional</button></div>`).join("");
 }
-
-document.getElementById("lista").innerHTML=lista.map(p=>`
-<div class="product ${p.stock===0?'alerta-sin':p.stock<=p.minimo?'alerta-bajo':''}">
-<b>${p.nombre}</b>
-<br>${p.marca} ${p.modelo}
-<br>🏷️ ${p.categoria}
-<br>💰 Venta: $${p.venta.toLocaleString("es-AR")}
-<br><span class="${p.stock<=p.minimo?'low':'stock'}">Stock: ${p.stock}</span>
-<br><br>
-<button onclick="cambiar(${p.id},1)">➕</button>
-<button class="gray" onclick="cambiar(${p.id},-1)">➖</button>
-<button class="red" onclick="borrar(${p.id})">🗑️</button>
-</div>
-`).join("");
-
-}
-
-function cambiar(id,cantidad){
-
-let p=productos.find(x=>x.id==id);
-
-if(!p)return;
-
-if(cantidad<0&&p.stock==0){
-alert("No hay stock");
-return;
-}
-
-p.stock+=cantidad;
-datos();
-mostrar();
-
-}
-
-function borrar(id){
-
-if(confirm("¿Eliminar este producto?")){
-productos=productos.filter(p=>p.id!=id);
-datos();
-mostrar();
-}
-
-}
-
-function mov(cantidad){
-
-if(productos.length==0){
-alert("Primero agregá un producto");
-return;
-}
-
-let nombre=prompt("Nombre o código del producto:");
-
-if(!nombre)return;
-
-let p=productos.find(x=>
-x.nombre.toLowerCase()==nombre.toLowerCase()||
-x.codigo==nombre
-);
-
-if(!p){
-alert("Producto no encontrado");
-return;
-}
-
-let cantidadMov=Number(prompt("Cantidad:"));
-
-if(cantidadMov>0){
-
-if(cantidad<0&&cantidadMov>p.stock){
-alert("No hay suficiente stock");
-return;
-}
-
-p.stock+=cantidad*cantidadMov;
-datos();
-mostrar();
-
-}
-
-}
-
-mostrar();
-
-function filtrarCategoria(categoria){
-  let lista = productos.filter(p => p.categoria === categoria);
-  let cont = document.getElementById("lista");
-  if(lista.length === 0){
-    cont.innerHTML = "No hay productos en " + categoria + ".";
-    return;
-  }
-  cont.innerHTML = lista.map(p => `
-    <div class="card">
-      <b>${p.nombre}</b><br>
-      ${p.marca || ""} ${p.modelo || ""}<br>
-      💰 $${p.venta}<br>
-      📦 Stock: ${p.stock}
-    </div>
-  `).join("");
-     }
-</script>
-<script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js');
-}
+function esc(s){return String(s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function obtener(id){return reparaciones.find(r=>r.id===id)}
+function mensaje(r){let total=totalDe(r);return `COMPROBANTE DE INGRESO - TECHSTOCK REPARACIONES\nOrden: REP-${String(r.id).padStart(4,"0")}\nCliente: ${r.cliente}\nEquipo: ${r.marca} ${r.modelo}\nFalla declarada: ${r.falla}\n${r.fallaAdicional?`Falla adicional: ${r.fallaAdicional}\nCosto adicional: $${dinero(r.costoAdicional)}\nAutorización del cliente: ${r.autorizacion||"Pendiente"}\n${r.obsAdicional?"Observaciones adicionales: "+r.obsAdicional+"\n":""}`:""}Estado: ${r.estado}\nPresupuesto inicial: $${dinero(r.presupuesto)}\nPresupuesto adicional: $${dinero(r.costoAdicional)}\nPRESUPUESTO TOTAL ACTUALIZADO: $${dinero(total)}\nSeña: $${dinero(r.sena)}\nSaldo estimado: $${dinero(Math.max(0,total-(Number(r.sena)||0)))}\nIngreso: ${r.fecha}\nAviso: si se detectan otras fallas, el presupuesto puede variar. Todo trabajo adicional requiere informar el costo y obtener autorización del cliente antes de realizarlo.\nConservá este mensaje para consultar por tu reparación.`}
+function whatsapp(id){let r=obtener(id);if(!r)return;let tel=r.telefono.replace(/\D/g,"");window.open("https://wa.me/"+tel+"?text="+encodeURIComponent(mensaje(r)),"_blank")}
+function pdf(id){let r=obtener(id);if(!r)return;let w=window.open("","_blank");if(!w){alert("Permití las ventanas emergentes para imprimir el comprobante.");return}w.document.write("<html><head><title>Comprobante</title><style>body{font-family:Arial;padding:25px;line-height:1.5}h1{color:#123}hr{margin:20px 0}</style></head><body><h1>TechStock Reparaciones</h1><h2>Comprobante de ingreso REP-"+String(r.id).padStart(4,"0")+"</h2><hr>"+esc(mensaje(r)).replace(/\n/g,"<br>")+"<hr><p>Firma del cliente: __________________</p><p>Firma del técnico: __________________</p><p>Este comprobante registra el ingreso del equipo y no constituye por sí solo una garantía del resultado de la reparación.</p><script>window.onload=()=>window.print()<\/script></body></html>");w.document.close()}
+function cambiarEstado(id){let r=obtener(id);if(!r)return;let nuevo=prompt("Nuevo estado:\nRecibido\nEn revisión\nEsperando repuesto\nEn reparación\nReparado\nEntregado",r.estado);if(nuevo){r.estado=nuevo;guardar();mostrar()}}
+function editarAdicional(id){let r=obtener(id);if(!r)return;let f=prompt("Descripción de la falla adicional:",r.fallaAdicional||"");if(f===null)return;let c=prompt("Costo adicional ($):",String(r.costoAdicional||0));if(c===null)return;let a=prompt("Autorización: Pendiente, Autorizado o Rechazado",r.autorizacion||"Pendiente");if(a===null)return;let o=prompt("Observaciones adicionales:",r.obsAdicional||"");r.fallaAdicional=f.trim();r.costoAdicional=Math.max(0,Number(c)||0);r.autorizacion=["Pendiente","Autorizado","Rechazado"].includes(a)?a:"Pendiente";if(o!==null)r.obsAdicional=o.trim();guardar();mostrar();alert("Falla adicional y presupuesto actualizados.")}
+actualizarTotal();mostrar();
 </script>
 </body>
 </html>
